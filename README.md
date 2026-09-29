@@ -6,7 +6,7 @@ A Spring Boot backend microservice that acts as a digital traffic cop for clinic
 
 - **REST API Ingestion** (`IngestionController`) — exposes a `/api/clinical/ingest` endpoint that catches incoming clinical data payloads and instantly validates them using Jakarta Bean Validation, rejecting malformed requests with an HTTP 400 status before they touch the business logic.
 - **Priority queue triage** (`TranscriptService`) — manages a `PriorityQueue` (configured as a Max-Heap) that automatically sorts incoming clinical transcripts by an urgency score (Critical > Urgent > Standard), ensuring the highest-risk patients are always polled first.
-- **In-Memory Medical Code Cache** — utilizes a `TreeMap` (Binary Search Tree) to hold ICD-10 medical billing codes. When a patient is processed, the engine scans their transcript text and maps keywords (e.g., "cardiac arrest") to the exact ICD-10 code in O(log n) time.
+- **In-Memory Medical Code Lookup** — utilizes a TreeMap (Binary Search Tree) to hold ICD-10 medical billing codes. When a patient is processed, the engine scans their transcript text for known keywords (e.g., "cardiac arrest") and maps the first match to its ICD-10 code, or flags the transcript for manual review if nothing matches.
 - **Dynamic routing engine** (`ClinicalService`) — evaluates priority thresholds on the fly, seamlessly directing patient records to either a High-Priority Urgent Care Stream or a Standard Clinical Queue.
 
 ## Tech stack
