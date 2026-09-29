@@ -5,6 +5,7 @@ import jakarta.annotation.PostConstruct;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.PriorityQueue;
+import java.util.Optional;
 
 @Service
 public class TranscriptService {
@@ -28,10 +29,10 @@ public class TranscriptService {
         System.out.println("[SERVICE] Added patient " + transcript.patientId() + ". Queue size: " + triageQueue.size());
     }
 
-    public void processNextTranscript() {
+    public Optional<String> processNextTranscript() {
         if (triageQueue.isEmpty()) {
             System.out.println("[SERVICE] Queue is empty. No patients to process.");
-            return;
+            return Optional.empty();
         }
 
         // .poll() removes the highest priority item from the Max-Heap
@@ -49,6 +50,7 @@ public class TranscriptService {
         }
 
         System.out.println("Assigned Code: " + assignedCode);
+        return Optional.of(assignedCode);
     }
 
     // Helper method for the Max-Heap weights
