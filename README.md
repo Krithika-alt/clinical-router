@@ -28,7 +28,7 @@ A Spring Boot backend microservice that acts as a digital traffic cop for clinic
 src/main/java/com/healthtech/clinicalrouter/
   IngestionController.java       REST entrypoint + @Valid request handling
   ClinicalService.java           rule-based priority routing logic
-  TranscriptService.java         max-heap triage queue + BST ICD-10 cache
+  TranscriptService.java         max-heap triage queue + BST ICD-10 lookup
   ClinicalRecordDto.java         data model + validation constraints
   TranscriptDTO.java             immutable record for clinical text
 ```
@@ -39,7 +39,7 @@ src/main/java/com/healthtech/clinicalrouter/
 ./mvnw test
 ```
 
-Covers end-to-end routing behavior using MockMvc. Tests validate the "happy path" (successful HTTP 200 routing of high-priority patients) and the "error path" (HTTP 400 Bad Request triggers when required payload fields are missing).
+Covers end-to-end routing behavior using MockMvc. Tests validate the "happy path" (successful HTTP 200 routing of high-priority patients) and the "error path" (HTTP 400 Bad Request triggers when required payload fields are missing). Unit tests (TranscriptServiceTest) also cover priority queue ordering (Critical > Urgent > Routine), case-insensitive ICD-10 keyword matching, the manual-review fallback for unmatched text, and the empty-queue case.
 
 ## Notes 
 
